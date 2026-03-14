@@ -140,4 +140,3 @@ specs/
 *.local.yml
 **/*.local.md
 node_modules/
-node_modules/

@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "open-notebook-edge",
-  "main": "src/backend/index.ts",
+  "main": "dist/_worker.js",
   "compatibility_date": "2026-03-13",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {

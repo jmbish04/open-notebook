@@ -7,22 +7,21 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "start": "astro dev"
+    "preview": "astro preview"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.30.3",
   "devDependencies": {
-    "@astrojs/cloudflare": "^13.1.1",
-    "@types/node": "^25.5.0",
-    "wrangler": "^4.73.0"
+    "@astrojs/cloudflare": "^11.0.0",
+    "@types/node": "^20.14.10",
+    "wrangler": "^3.63.0"
   },
   "dependencies": {
-    "@hono/zod-openapi": "^1.2.2",
-    "astro": "^6.0.4",
-    "drizzle-orm": "^0.45.1",
-    "hono": "^4.12.7"
+    "@hono/zod-openapi": "^0.12.2",
+    "astro": "^4.11.3",
+    "drizzle-orm": "^0.31.2",
+    "hono": "^4.4.12"
   }
 }
