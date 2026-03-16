@@ -1,0 +1,304 @@
+{
+  "project_name": "Open Notebook (Cloudflare Retrofit)",
+  "generated_date": "2026-03-13T18:50:00Z",
+  "total_phases": 7,
+  "phases": [
+    {
+      "phase_number": 1,
+      "phase_title": "Project Scaffolding & Configuration",
+      "description": "Initialize Astro, Hono backend, and Cloudflare wrangler configurations.",
+      "success_criteria": [
+        "Astro project runs locally with Vite plugin",
+        "wrangler.jsonc validates successfully",
+        "worker-configuration.d.ts is generated"
+      ],
+      "implementation_plan": {
+        "title": "Initialization",
+        "description": "Setup the monorepo-style structure combining Astro and Hono in a single Worker.",
+        "architecture": {
+          "explanation": "Astro handles static routes, Hono handles /api. Both run in the same Cloudflare Worker."
+        },
+        "proposed_changes": [
+          {
+            "category": "Configuration",
+            "files": [
+              {
+                "action": "NEW",
+                "file_path": "wrangler.jsonc",
+                "instructions": [
+                  "Create wrangler blueprint per PRD"
+                ]
+              },
+              {
+                "action": "NEW",
+                "file_path": "astro.config.mjs",
+                "instructions": [
+                  "Configure Cloudflare adapter and React integration"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "tasks": [
+        {
+          "task_number": 1.1,
+          "status": "complete",
+          "agent_assigned": "Architect Agent",
+          "task_title": "Initialize Project & Wrangler",
+          "task_description": "Setup package.json with pnpm, generate wrangler.jsonc, run `npx wrangler types`.",
+          "cloudflare_docs_queries": [
+            "What is the correct astro.config.mjs configuration for Cloudflare Workers Assets?"
+          ],
+          "steps": [
+            {
+              "number": 1.11,
+              "title": "Install dependencies",
+              "status": "complete",
+              "technical_requirements": [
+                "pnpm add -D wrangler@latest",
+                "pnpm install hono @hono/zod-openapi drizzle-orm"
+              ],
+              "success_criteria": [
+                "Dependencies installed"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_number": 2,
+      "phase_title": "Database Layer (D1 + Vectorize)",
+      "description": "Replace SurrealDB with D1 (relational) and Vectorize (embeddings).",
+      "success_criteria": [
+        "Drizzle schema generated",
+        "Local migrations succeed"
+      ],
+      "implementation_plan": {
+        "title": "Data Migration Architecture",
+        "description": "Design Drizzle schemas for notes, notebooks, and podcasts.",
+        "proposed_changes": [
+          {
+            "category": "Backend: DB",
+            "files": [
+              {
+                "action": "NEW",
+                "file_path": "src/backend/db/schemas/notebooks.ts"
+              }
+            ]
+          }
+        ]
+      },
+      "tasks": [
+        {
+          "task_number": 2.1,
+          "status": "not_started",
+          "agent_assigned": "Architect Agent",
+          "task_title": "Create Drizzle Schemas",
+          "task_description": "Define tables for notebooks, notes, sources, podcasts, and logs.",
+          "cloudflare_docs_queries": [
+            "What is the current Drizzle ORM syntax for Cloudflare D1?"
+          ],
+          "steps": [
+            {
+              "number": 2.11,
+              "title": "Schema files",
+              "status": "not_started",
+              "technical_requirements": [
+                "One file per table"
+              ],
+              "success_criteria": [
+                "pnpm run db:generate succeeds"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_number": 3,
+      "phase_title": "Core Backend (Hono + Zod OpenAPI)",
+      "description": "Port FastAPI routes to Hono OpenAPI.",
+      "success_criteria": [
+        "/swagger UI renders correctly",
+        "CRUD operations for notebooks work via API"
+      ],
+      "implementation_plan": {
+        "title": "API Rewrite",
+        "description": "Map FastAPI routers to Hono modules."
+      },
+      "tasks": [
+        {
+          "task_number": 3.1,
+          "status": "not_started",
+          "agent_assigned": "Architect Agent",
+          "task_title": "Hono Router Setup",
+          "task_description": "Create OpenAPIHono instance and mount routes.",
+          "cloudflare_docs_queries": [
+            "How to configure @hono/zod-openapi with Cloudflare bindings?"
+          ],
+          "steps": [
+            {
+              "number": 3.11,
+              "title": "Setup App",
+              "status": "not_started",
+              "technical_requirements": [
+                "Export app from src/backend/index.ts"
+              ],
+              "success_criteria": [
+                "/openapi.json returns 200"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_number": 4,
+      "phase_title": "AI Infrastructure & Agents",
+      "description": "Replace LangGraph with Cloudflare Agents SDK.",
+      "success_criteria": [
+        "NotebookChatAgent connects via WS/SSE",
+        "PodcastWorkflowAgent executes statefully"
+      ],
+      "implementation_plan": {
+        "title": "Agent Migration",
+        "description": "Convert python graph logic into AIChatAgent and standard Agent classes."
+      },
+      "tasks": [
+        {
+          "task_number": 4.1,
+          "status": "not_started",
+          "agent_assigned": "AI/Agent Agent",
+          "task_title": "Implement NotebookChatAgent",
+          "task_description": "Create AIChatAgent DO class with Vectorize search tools.",
+          "cloudflare_docs_queries": [
+            "How does AIChatAgent from @cloudflare/ai-chat handle tool execution?"
+          ],
+          "steps": [
+            {
+              "number": 4.11,
+              "title": "Agent DO",
+              "status": "not_started",
+              "technical_requirements": [
+                "Use @cloudflare/ai-chat"
+              ],
+              "success_criteria": [
+                "Agent responds to chat events"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_number": 5,
+      "phase_title": "Frontend (Astro + shadcn/ui)",
+      "description": "Rewrite Next.js UI in Astro with React Islands.",
+      "success_criteria": [
+        "Dark theme renders default",
+        "assistant-ui connects to Agent"
+      ],
+      "implementation_plan": {
+        "title": "Frontend Rewrite",
+        "description": "Build UI components and connect them to Hono APIs."
+      },
+      "tasks": [
+        {
+          "task_number": 5.1,
+          "status": "not_started",
+          "agent_assigned": "Frontend Agent",
+          "task_title": "Scaffold Astro Pages & Shadcn",
+          "task_description": "Install components and build layout.",
+          "cloudflare_docs_queries": [
+            "How to integrate shadcn with Astro React islands?"
+          ],
+          "steps": [
+            {
+              "number": 5.11,
+              "title": "Install shadcn",
+              "status": "not_started",
+              "technical_requirements": [
+                "npx shadcn@latest init"
+              ],
+              "success_criteria": [
+                "Components installed"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_number": 6,
+      "phase_title": "Health System",
+      "description": "Implement comprehensive health monitoring.",
+      "success_criteria": [
+        "/health page renders real-time status"
+      ],
+      "implementation_plan": {
+        "title": "Health Dashboard",
+        "description": "UI and API for system checks"
+      },
+      "tasks": [
+        {
+          "task_number": 6.1,
+          "status": "not_started",
+          "agent_assigned": "Frontend Agent",
+          "task_title": "Build Health UI",
+          "task_description": "Create interactive Astro page for health checks.",
+          "cloudflare_docs_queries": [],
+          "steps": [
+            {
+              "number": 6.11,
+              "title": "Health UI",
+              "status": "not_started",
+              "technical_requirements": [
+                "Fetch from /api/health"
+              ],
+              "success_criteria": [
+                "Dashboard renders"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_number": 7,
+      "phase_title": "Documentation",
+      "description": "Generate exhaustive SWARM spec documentation.",
+      "success_criteria": [
+        "/docs page contains DB, API, and Agent info"
+      ],
+      "implementation_plan": {
+        "title": "Docs Generation",
+        "description": "Static generation of system docs."
+      },
+      "tasks": [
+        {
+          "task_number": 7.1,
+          "status": "not_started",
+          "agent_assigned": "Frontend Agent",
+          "task_title": "Build Docs Page",
+          "task_description": "Create /docs Astro route.",
+          "cloudflare_docs_queries": [],
+          "steps": [
+            {
+              "number": 7.11,
+              "title": "Docs Page",
+              "status": "not_started",
+              "technical_requirements": [
+                "Include swagger links"
+              ],
+              "success_criteria": [
+                "/docs renders"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

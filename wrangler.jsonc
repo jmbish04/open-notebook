@@ -1,0 +1,58 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "open-notebook-edge",
+  "main": "dist/_worker.js",
+  "compatibility_date": "2026-03-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "invocation_logs": true,
+      "head_sampling_rate": 1
+    }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "open-notebook-db",
+      "database_id": "<DATABASE_ID>",
+      "migrations_dir": "./drizzle"
+    }
+  ],
+  "vectorize": [
+    {
+      "binding": "VECTOR_INDEX",
+      "index_name": "open-notebook-embeddings"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "STORAGE",
+      "bucket_name": "open-notebook-storage"
+    }
+  ],
+  "ai": {
+    "binding": "AI"
+  },
+  "vars": {
+    "AI_GATEWAY_NAME": "open-notebook-gateway"
+  },
+  "secrets_store_secrets": [
+    { "binding": "OPENAI_API_KEY", "store_id": "<STORE_ID>", "secret_name": "openai-api-key" },
+    { "binding": "ELEVENLABS_API_KEY", "store_id": "<STORE_ID>", "secret_name": "elevenlabs-api-key" }
+  ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "NotebookChatAgent", "class_name": "NotebookChatAgent" },
+      { "name": "PodcastWorkflowAgent", "class_name": "PodcastWorkflowAgent" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["NotebookChatAgent", "PodcastWorkflowAgent"] }
+  ]
+}

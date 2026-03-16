@@ -1,0 +1,27 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.30.3",
+  "devDependencies": {
+    "@astrojs/cloudflare": "^11.0.0",
+    "@types/node": "^20.14.10",
+    "wrangler": "^3.63.0"
+  },
+  "dependencies": {
+    "@hono/zod-openapi": "^0.12.2",
+    "astro": "^4.11.3",
+    "drizzle-orm": "^0.31.2",
+    "hono": "^4.4.12"
+  }
+}
