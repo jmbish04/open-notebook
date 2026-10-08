@@ -32,7 +32,7 @@ env:
 
 jobs:
   extract-version:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.full_name && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || fromJSON('["self-hosted","Linux","X64","proxmox-actions"]') }}
     outputs:
       version: ${{ steps.version.outputs.version }}
       has_dockerhub_secrets: ${{ steps.check.outputs.has_dockerhub_secrets }}
@@ -74,7 +74,7 @@ jobs:
 
   build-regular:
     needs: extract-version
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.full_name && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || fromJSON('["self-hosted","Linux","X64","proxmox-actions"]') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -154,7 +154,7 @@ jobs:
     needs: extract-version
     # Only build single image on push to main
     if: needs.extract-version.outputs.is_push_to_main == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.full_name && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || fromJSON('["self-hosted","Linux","X64","proxmox-actions"]') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -220,7 +220,7 @@ jobs:
 
   summary:
     needs: [extract-version, build-regular, build-single]
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.full_name && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || fromJSON('["self-hosted","Linux","X64","proxmox-actions"]') }}
     if: always()
     steps:
       - name: Development Build Summary
